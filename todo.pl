@@ -1,3 +1,5 @@
+#! /usr/bin/perl
+
 package TODO 1;
 
 use strict;
@@ -12,7 +14,7 @@ sub delFromTodo;
 
 # # Main
 # # # # # # # # # # # # # # # # # #
-my $file = "todo";
+my $file = ".todo";
 my $fh;
 
 my %todo;
