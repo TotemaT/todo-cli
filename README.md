@@ -33,7 +33,7 @@ TOPIC2
 	task4
 ```
 
-In both cases, the topics being in the alphabetical order.
+In both cases, the topics are shown in alphabetical order.
 
 ##Todo
 - Add the possibility to delete a whole topic at once <br>
