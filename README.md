@@ -7,6 +7,8 @@ Basic todo list made in Perl.
 	#Show the full todo list
 ./todo.pl (add | del) topic task
 	#Add or delete a precise task under a given topic
+./todo.pl del topic
+	#Delete a whole topic after the user confirmation
 ```
 
 ##Output
@@ -36,8 +38,6 @@ TOPIC2
 In both cases, the topics are shown in alphabetical order.
 
 ##Todo
-- Add the possibility to delete a whole topic at once <br>
-	eg : ./todo.pl del topic
 - Add the possibility to delete a task by its index in the topic <br>
 	eg : ./todo.pl del topic 2
 - Add a limit for the topic and task length
