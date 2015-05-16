@@ -162,5 +162,5 @@ sub delTopicFromTodo {
 }
 
 sub usage {
-	print "Usage :\n\t$0\n\t$0 (add | del) topic task\n$0 del topic";
+	print "Usage :\n\t$0\n\t$0 (add | del) topic task\n\t$0 del topic\n";
 }
