@@ -129,6 +129,12 @@ sub addToTodo {
 	chomp($task);
 
 	if (exists $todo{$topic}) {
+		for (my $i = 0; $i < @{$todo{$topic}}; $i++ ){
+			if ($task eq $todo{$topic}[$i]) {
+				print "This task already exists.\n";
+				return;
+			}
+		}
 		push($todo{$topic}, $task);
 	} else {
 		$todo{$topic} = [$task];
