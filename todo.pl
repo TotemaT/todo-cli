@@ -6,11 +6,13 @@ use strict;
 use warnings;
 
 sub main;
-sub showTodo;
 sub readTodo;
+sub showTodo;
 sub writeTodo;
 sub addToTodo;
 sub delFromTodo;
+sub delTopicFromTodo;
+sub usage;
 
 # # Main
 # # # # # # # # # # # # # # # # # #
@@ -24,18 +26,30 @@ readTodo;
 
 main;
 
-1;
-
 # # Subroutines
 # # # # # # # # # # # # # # # # # #
 sub main {
 	my $argCount = $#ARGV + 1;
+	my $action;
+	my $topic;
+	my $task;
+
 	if ($argCount == 0) { # No args -> Show todo
 		showTodo;
+	} elsif ($argCount == 2) {
+		$action = $ARGV[0];
+		$topic = $ARGV[1];
+
+		if ($action eq "del") {
+			delTopicFromTodo($topic);
+			writeTodo;
+		} else {
+			usage;
+		}
 	} elsif ($argCount == 3) {
-		my $action = $ARGV[0];
-		my $topic = $ARGV[1];
-		my $task = $ARGV[2];
+		$action = $ARGV[0];
+		$topic = $ARGV[1];
+		$task = $ARGV[2];
 
 		if (length($topic) > $topicLength) {
 			printf "Topic is limited to $topicLength characters.\n";
@@ -55,22 +69,10 @@ sub main {
 			showTodo;
 			writeTodo;
 		} else {
-			print "Usage :\n\t$0\n\t$0 (add | del) topic task\n";
+			usage;
 		}
 	} else {
-		print "Usage :\n\t$0\n\t$0 (add | del) topic task\n";
-	}
-	return;
-}
-
-sub showTodo {
-	print "TODO\n#####################\n";
-	print "No task yet.\n" unless keys(%todo) > 0;
-	foreach my $topic (sort keys %todo) {
-		print "$topic\n";
-		for my $i (0 .. $#{$todo{$topic}}) {
-			print "\t$todo{$topic}[$i]\n"
-		}
+		usage;
 	}
 	return;
 }
@@ -84,6 +86,18 @@ sub readTodo {
 			$todo{$topic} = [ @fields ];
 		}
 		close($fh);
+	}
+	return;
+}
+
+sub showTodo {
+	print "TODO\n#####################\n";
+	print "No task yet.\n" unless keys(%todo) > 0;
+	foreach my $topic (sort keys %todo) {
+		print "$topic\n";
+		for my $i (0 .. $#{$todo{$topic}}) {
+			print "\t$todo{$topic}[$i]\n"
+		}
 	}
 	return;
 }
@@ -131,4 +145,22 @@ sub delFromTodo {
 		delete($todo{$topic}) unless (@{$todo{$topic}} != 0);
 	}
 	return;
+}
+
+sub delTopicFromTodo {
+	my $topic = $_[0];
+	$topic = uc($topic);
+
+	if (exists $todo{$topic}) {
+		print "Do you really want to delete all tasks under $topic? (y/n)\n";
+		my $answer = <STDIN>;
+		chomp($answer);
+		if ($answer eq "y" or $answer eq "Y") {
+			delete($todo{$topic});
+		}
+	}
+}
+
+sub usage {
+	print "Usage :\n\t$0\n\t$0 (add | del) topic task\n$0 del topic";
 }
