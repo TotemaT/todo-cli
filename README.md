@@ -2,7 +2,7 @@
 Basic todo list made in Perl.
 
 ##How to use
-From the command line : 
+From the command line :
 ```
 ./todo.pl
 	#Show the full todo list
@@ -43,3 +43,4 @@ In both cases, the topics are shown in alphabetical order.
 ##Todo
 - Add the possibility to delete a task by its index in the topic <br>
 	eg : ./todo.pl del topic 2
+- Avoid adding a task if already in the topic

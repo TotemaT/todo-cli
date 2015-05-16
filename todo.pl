@@ -81,6 +81,7 @@ sub readTodo {
 	if (-e $file) {
 		open ($fh, '<', $file) or die "Couldn't open the file for reading\n";
 		while (my $line = <$fh>) {
+			chomp($line);
 			my ($topic, $tasks) = split /:\s*/, $line, 2;
 			my @fields = split ',', $tasks;
 			$todo{$topic} = [ @fields ];
@@ -111,6 +112,8 @@ sub writeTodo {
 			print $fh "$todo{$topic}[$i]";
 			if ($i != $#{$todo{$topic}}) {
 				print $fh ","
+			} else {
+				print $fh "\n";
 			}
 		}
 	}
@@ -122,6 +125,8 @@ sub addToTodo {
 	my ($topic, $task) = @_;
 	$topic = uc($topic);
 	$task = lc($task);
+	chomp($topic);
+	chomp($task);
 
 	if (exists $todo{$topic}) {
 		push($todo{$topic}, $task);
