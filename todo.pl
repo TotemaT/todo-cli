@@ -14,7 +14,9 @@ sub delFromTodo;
 
 # # Main
 # # # # # # # # # # # # # # # # # #
-my $file = ".todo";
+my $file = "/Users/Matt/.todo";
+my $topicLength = 20;
+my $taskLength = 140;
 my $fh;
 
 my %todo;
@@ -22,7 +24,6 @@ readTodo;
 
 main;
 
-writeTodo;
 1;
 
 # # Subroutines
@@ -32,10 +33,27 @@ sub main {
 	if ($argCount == 0) { # No args -> Show todo
 		showTodo;
 	} elsif ($argCount == 3) {
-		if (lc($ARGV[0]) eq "add") {
-			addToTodo($ARGV[1], $ARGV[2]);
-		} elsif (lc($ARGV[0]) eq "del") {
-			delFromTodo($ARGV[1], $ARGV[2]);
+		my $action = $ARGV[0];
+		my $topic = $ARGV[1];
+		my $task = $ARGV[2];
+
+		if (length($topic) > $topicLength) {
+			printf "Topic is limited to $topicLength characters.\n";
+			return;
+		}
+		if (length($task) > $taskLength) {
+			print "Task is limited to $taskLength characters.\n";
+			return;
+		}
+
+		if (lc($action) eq "add") {
+			addToTodo($topic, $task);
+			showTodo;
+			writeTodo;
+		} elsif (lc($action) eq "del") {
+			delFromTodo($topic, $task);
+			showTodo;
+			writeTodo;
 		} else {
 			print "Usage :\n\t$0\n\t$0 (add | del) topic task\n";
 		}
@@ -46,7 +64,7 @@ sub main {
 }
 
 sub showTodo {
-	print "Todo list\n#####################\n";
+	print "TODO\n#####################\n";
 	print "No task yet.\n" unless keys(%todo) > 0;
 	foreach my $topic (sort keys %todo) {
 		print "$topic\n";
@@ -61,9 +79,9 @@ sub readTodo {
 	if (-e $file) {
 		open ($fh, '<', $file) or die "Couldn't open the file for reading\n";
 		while (my $line = <$fh>) {
-			my ($who, $rest) = split /:\s*/, $line, 2;
-			my @fields = split ' ', $rest;
-			$todo{$who} = [ @fields ];
+			my ($topic, $tasks) = split /:\s*/, $line, 2;
+			my @fields = split ',', $tasks;
+			$todo{$topic} = [ @fields ];
 		}
 		close($fh);
 	}
@@ -74,11 +92,13 @@ sub writeTodo {
 	open ($fh, '>', $file) or die "Couldn't open the file for writing\n";
 
 	foreach my $topic (sort keys %todo) {
-		print $fh "$topic:";
+		print $fh "$topic: ";
 		for my $i (0 .. $#{$todo{$topic}}) {
-			print $fh "$todo{$topic}[$i] "
+			print $fh "$todo{$topic}[$i]";
+			if ($i != $#{$todo{$topic}}) {
+				print $fh ","
+			}
 		}
-		print $fh "\n";
 	}
 	close($fh);
 	return;
@@ -94,7 +114,6 @@ sub addToTodo {
 	} else {
 		$todo{$topic} = [$task];
 	}
-	showTodo;
 	return;
 }
 
@@ -104,13 +123,12 @@ sub delFromTodo {
 	$task = lc($task);
 
 	if (exists $todo{$topic}) {
-		my $index ;
+		my $index;
 		for ($index = 0; $index < @{$todo{$topic}}; $index++) {
 			last if ($todo{$topic}[$index] eq $task);
 		}
-		splice($todo{$topic}, $index, 1);
+		splice($todo{$topic}, $index, 2);
 		delete($todo{$topic}) unless (@{$todo{$topic}} != 0);
 	}
-	showTodo;
 	return;
 }
