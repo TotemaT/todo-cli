@@ -2,6 +2,7 @@
 Basic todo list made in Perl.
 
 ##How to use
+From the command line : 
 ```
 ./todo.pl
 	#Show the full todo list
@@ -10,6 +11,8 @@ Basic todo list made in Perl.
 ./todo.pl del topic
 	#Delete a whole topic after the user confirmation
 ```
+
+Using the command without argument in a software like [GeekTool (OSX)](http://projects.tynsoe.org/fr/geektool/) allows to show the todo list directly on your desktop.
 
 ##Output
 This program create a file nammed .todo in its directory. The file content will be in this form :
