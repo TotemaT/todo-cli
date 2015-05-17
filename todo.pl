@@ -1,9 +1,8 @@
 #! /usr/bin/perl
 
-package TODO 1;
-
 use strict;
 use warnings;
+use Scalar::Util qw(looks_like_number);
 
 sub main;
 sub readTodo;
@@ -97,7 +96,7 @@ sub showTodo {
 	foreach my $topic (sort keys %todo) {
 		print "$topic\n";
 		for my $i (0 .. $#{$todo{$topic}}) {
-			print "\t$todo{$topic}[$i]\n"
+			printf "\t%d. $todo{$topic}[$i]\n", $i + 1;
 		}
 	}
 	return;
@@ -149,10 +148,20 @@ sub delFromTodo {
 
 	if (exists $todo{$topic}) {
 		my $index;
-		for ($index = 0; $index < @{$todo{$topic}}; $index++) {
-			last if ($todo{$topic}[$index] eq $task);
+		if (looks_like_number($task)) {
+			$index = $task - 1;
+			if ($index >= @{$todo{$topic}}) {
+				print "Index out of bound.\n";
+				return;
+			}
+			# FIXME delete the array from this index to the end of the array
+		} else {
+			for ($index = 0; $index < @{$todo{$topic}}; $index++) {
+				last if ($todo{$topic}[$index] eq $task);
+			}
 		}
-		splice($todo{$topic}, $index, 2);
+		print "$index\n";
+		splice($todo{$topic}, $index, 1);
 		delete($todo{$topic}) unless (@{$todo{$topic}} != 0);
 	}
 	return;

@@ -41,5 +41,3 @@ TOPIC2
 In both cases, the topics are shown in alphabetical order.
 
 ##Todo
-- Add the possibility to delete a task by its index in the topic <br>
-	eg : ./todo.pl del topic 2
