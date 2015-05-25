@@ -15,7 +15,7 @@ sub usage;
 
 # # Main
 # # # # # # # # # # # # # # # # # #
-my $file = ".todo";
+my $file = "/Users/Matt/.todo";
 my $topicLength = 20;
 my $taskLength = 140;
 my $fh;

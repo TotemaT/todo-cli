@@ -39,5 +39,3 @@ TOPIC2
 ```
 
 In both cases, the topics are shown in alphabetical order.
-
-##Todo
