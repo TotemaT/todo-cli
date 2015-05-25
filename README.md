@@ -28,14 +28,14 @@ But the result shown by the program will look like this :
 Todo list
 #####################
 TOPIC1
-	task1
-	task2
-	task3
+	1. task1
+	2. task2
+	3. task3
 TOPIC2
-	task1
-	task2
-	task3
-	task4
+	1. task1
+	2. task2
+	3. task3
+	4. task4
 ```
 
 In both cases, the topics are shown in alphabetical order.
