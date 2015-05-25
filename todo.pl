@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -15,10 +15,9 @@ sub usage;
 
 # # Main
 # # # # # # # # # # # # # # # # # #
-my $file = "/Users/Matt/.todo";
+my $file = ".todo";
 my $topicLength = 20;
 my $taskLength = 140;
-my $fh;
 
 my %todo;
 readTodo;
@@ -78,11 +77,13 @@ sub main {
 
 sub readTodo {
 	if (-e $file) {
+		my $fh;
 		open ($fh, '<', $file) or die "Couldn't open the file for reading\n";
 		while (my $line = <$fh>) {
 			chomp($line);
 			my ($topic, $tasks) = split /:\s*/, $line, 2;
-			my @fields = split ',', $tasks;
+			my @fields = split '\",\"', $tasks;
+			s{^\"+|\"+$}{}g foreach @fields;
 			$todo{$topic} = [ @fields ];
 		}
 		close($fh);
@@ -103,12 +104,13 @@ sub showTodo {
 }
 
 sub writeTodo {
+	my $fh;
 	open ($fh, '>', $file) or die "Couldn't open the file for writing\n";
 
 	foreach my $topic (sort keys %todo) {
 		print $fh "$topic: ";
 		for my $i (0 .. $#{$todo{$topic}}) {
-			print $fh "$todo{$topic}[$i]";
+			print $fh "\"$todo{$topic}[$i]\"";
 			if ($i != $#{$todo{$topic}}) {
 				print $fh ","
 			} else {
@@ -154,7 +156,6 @@ sub delFromTodo {
 				print "Index out of bound.\n";
 				return;
 			}
-			# FIXME delete the array from this index to the end of the array
 		} else {
 			for ($index = 0; $index < @{$todo{$topic}}; $index++) {
 				last if ($todo{$topic}[$index] eq $task);
@@ -182,5 +183,5 @@ sub delTopicFromTodo {
 }
 
 sub usage {
-	print "Usage :\n\t$0\n\t$0 (add | del) topic task\n\t$0 del topic\n";
+	print "Usage:\n./todo.pl\n\t#Show the full todo list\n./todo.pl add topic task\n\t#Add a task under a given topic, creating the topic if needed\n./todo.pl del topic (task | task_nb)\n\t#Delete a task, designed by its name or its number, under a topic, deleting the topic if empty\n./todo.pl del topic\n\t#Delete a topic (including its tasks) after the user confirmation\n";
 }
