@@ -11,10 +11,11 @@ sub writeTodo;
 sub addToTodo;
 sub delFromTodo;
 sub delTopicFromTodo;
+sub updateTodo;
 sub usage;
 
 # # Main
-# # # # # # # # # # # # # # # # # #
+# # # # # # #p # # # # # # # # # # #
 my $file = ".todo";
 my $topicLength = 20;
 my $taskLength = 140;
@@ -32,7 +33,7 @@ sub main {
 	my $topic;
 	my $task;
 
-	if ($argCount == 0) { # No args -> Show todo
+	if ($argCount == 0) {
 		showTodo;
 	} elsif ($argCount == 2) {
 		$action = $ARGV[0];
@@ -64,6 +65,19 @@ sub main {
 			writeTodo;
 		} elsif (lc($action) eq "del") {
 			delFromTodo($topic, $task);
+			showTodo;
+			writeTodo;
+		} else {
+			usage;
+		}
+	} elsif ($argCount == 4) {
+		my $action = $ARGV[0];
+		my $topic = $ARGV[1];
+		my $task = $ARGV[2];
+		my $update = $ARGV[3];
+
+		if (lc($action) eq "upd") {
+			updateTodo($topic, $task, $update);
 			showTodo;
 			writeTodo;
 		} else {
@@ -182,6 +196,27 @@ sub delTopicFromTodo {
 	}
 }
 
+sub updateTodo {
+	my ($topic, $task, $update) = @_;
+	$topic = uc($topic);
+	$task = lc($task);
+	$update = lc($update);
+	if (exists $todo{$topic} && looks_like_number($task)) {
+		my $index = $task - 1;
+		my $key;
+		if ($index >= @{$todo{$topic}}) {
+			print "Index out of bound.\n";
+			return;
+		} else {
+			my @keys = keys %todo;
+			my $key = $keys[$index];
+			printf "---------- $todo{$key} -------------";
+			$todo{$key} = [$update];
+			printf "---- $todo{$key} ----"
+		}
+	}
+}
+
 sub usage {
-	print "Usage:\n./todo.pl\n\t#Show the full todo list\n./todo.pl add topic task\n\t#Add a task under a given topic, creating the topic if needed\n./todo.pl del topic (task | task_nb)\n\t#Delete a task, designed by its name or its number, under a topic, deleting the topic if empty\n./todo.pl del topic\n\t#Delete a topic (including its tasks) after the user confirmation\n";
+	print "Usage:\n$0\n\t#Show the full todo list\n$0 add topic task\n\t#Add a task under a given topic, creating the topic if needed\n$0 del topic (task | task_nb)\n\t#Delete a task, designated by its name or its number, under a topic, deleting the topic if empty\n$0 del topic\n\t#Delete a topic (including its tasks) after the user confirmation\n$0 upd topic task_nb task_updated\n\t#Update a task, designated by its number.\n";
 }

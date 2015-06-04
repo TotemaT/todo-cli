@@ -12,12 +12,14 @@ From the command line:
 	#Delete a task, designed by its name or its number, under a topic, deleting the topic if empty
 ./todo.pl del topic
 	#Delete a topic (including its tasks) after the user confirmation
+./todo.pl upd topic task_nb task_updated
+	#Update a task, designated by its number.
 ```
 
 Using the command without argument in a software like [GeekTool (OSX)](http://projects.tynsoe.org/fr/geektool/) allows to show the todo list directly on your desktop.
 
 ##Output
-This program creates a file named .todo in its directory. The file content will be in this form :
+This program creates a file named .todo in its directory (or any other directory, should you change it in the script). The file content will be in this form :
 
 ```
 TOPIC1: task1,task2,task3
