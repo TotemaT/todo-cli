@@ -208,11 +208,7 @@ sub updateTodo {
 			print "Index out of bound.\n";
 			return;
 		} else {
-			my @keys = keys %todo;
-			my $key = $keys[$index];
-			printf "---------- $todo{$key} -------------";
-			$todo{$key} = [$update];
-			printf "---- $todo{$key} ----"
+			$todo{$topic}[$index] = $update;
 		}
 	}
 }
