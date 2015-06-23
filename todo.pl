@@ -188,9 +188,8 @@ sub delTopicFromTodo {
 
 	if (exists $todo{$topic}) {
 		print "Do you really want to delete all tasks under $topic? (y/n)\n";
-		my $answer = <STDIN>;
-		chomp($answer);
-		if ($answer eq "y" or $answer eq "Y") {
+		my $answer = substr(lc(<STDIN>),0,1);
+		if ($answer eq "y") {
 			delete($todo{$topic});
 		}
 	}
