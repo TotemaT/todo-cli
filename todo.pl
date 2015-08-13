@@ -106,7 +106,6 @@ sub readTodo {
 }
 
 sub showTodo {
-	print "TODO\n#####################\n";
 	print "No task yet.\n" unless keys(%todo) > 0;
 	foreach my $topic (sort keys %todo) {
 		print "$topic\n";
@@ -175,7 +174,6 @@ sub delFromTodo {
 				last if ($todo{$topic}[$index] eq $task);
 			}
 		}
-		print "$index\n";
 		splice($todo{$topic}, $index, 1);
 		delete($todo{$topic}) unless (@{$todo{$topic}} != 0);
 	}
