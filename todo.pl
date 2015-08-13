@@ -175,7 +175,6 @@ sub delFromTodo {
 				last if ($todo{$topic}[$index] eq $task);
 			}
 		}
-		print "$index\n";
 		splice($todo{$topic}, $index, 1);
 		delete($todo{$topic}) unless (@{$todo{$topic}} != 0);
 	}
